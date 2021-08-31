@@ -7,6 +7,7 @@ import javax.sql.DataSource
 
 @Configuration
 class JdbcTemplateConfig {
+
     //Автоматически создается Spring. Можно не переопределять
     @Bean
     fun jdbcTemplate(datasource: DataSource) = JdbcTemplate(datasource)

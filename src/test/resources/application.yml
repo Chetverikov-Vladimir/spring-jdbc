@@ -4,4 +4,4 @@ spring:
       enabled: true
   datasource:
     schema: schema.sql
-    data: data.sql
+    data: data-test.sql

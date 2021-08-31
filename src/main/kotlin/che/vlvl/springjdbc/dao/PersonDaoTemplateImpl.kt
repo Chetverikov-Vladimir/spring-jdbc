@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 
 @Repository
-class PersonDaoImpl(val jdbcTemplate: NamedParameterJdbcOperations) : PersonDao {
+class PersonDaoTemplateImpl(val jdbcTemplate: NamedParameterJdbcOperations) : PersonDao {
     override fun insertPerson(person: Person): Int = if (getById(person.id) == null) {
         jdbcTemplate.update(
             "INSERT INTO PERSONS (ID, NAME, AGE) VALUES (:id, :name, :age)",
@@ -23,6 +23,7 @@ class PersonDaoImpl(val jdbcTemplate: NamedParameterJdbcOperations) : PersonDao 
         mapOf("id" to id)
     )
 
+    // Используется ResultSetExtractor
     override fun getById(id: Long) = jdbcTemplate.query(
         "SELECT * FROM PERSONS WHERE ID=:id",
         mapOf("id" to id),
@@ -37,7 +38,8 @@ class PersonDaoImpl(val jdbcTemplate: NamedParameterJdbcOperations) : PersonDao 
         }
     )
 
-    //Для более специфичных случаев можно использовать перегруженные версии, например, с ResultSetExtractor
+    // Используется RowMapper, для более специфичных случаев можно использовать
+    // перегруженные версии, например, с ResultSetExtractor
     override fun getAll(): List<Person> = jdbcTemplate.query(
         "SELECT * FROM PERSONS"
     ) { rs, _ ->
